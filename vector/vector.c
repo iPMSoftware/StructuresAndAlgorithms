@@ -1,5 +1,5 @@
 /*-----------------------------------------------------------------------------
- * Copyright (C) 2015 by iPM Software
+ * Copyright (C) 2021 by iPM Software
  *
  * All rights reserved.  No part of this software may be reproduced,
  * transmitted, transcribed, stored in a retrieval system, or translated
@@ -82,6 +82,7 @@ ipm_vector_ptr ipm_vector_init(int count) {
     v = malloc(sizeof(struct ipm_vector) * count);
     v->capacity_ = count;
     v->size_ = 0;
+    v->buff_ = malloc(count * sizeof(int));
     return v;
 }
 
