@@ -1,26 +1,30 @@
+CC = gcc
+LIB_STATIC = ./lib_static
+LIB_SHARED = ./lib_shared
+
 build:
 	mkdir -p out
-	gcc -g -c main.c -o out/main.o
+	${CC} -g -c main.c -o out/main.o
 
 	
-	gcc -g -c vector/vector.c -o out/vector.o
-	gcc out/main.o out/vector.o -lcmocka -o out/main.out
+	${CC} -g -c vector/vector.c -o out/vector.o
+	${CC} out/main.o out/vector.o -lcmocka -o out/main.out
 clean:
 	rm -rfv out
-	rm -rfv lib_shared
-	rm -rfv lib_static
+	rm -rfv ${LIB_SHARED}
+	rm -rfv ${LIB_STATIC}
 
 lib_static:
-	mkdir -p lib_static
-	gcc -c vector/vector.c -o lib_static/vector.out
-	ar crs lib_static/libvector.a lib_static/vector.out
-	gcc -c vector_test.c -o lib_static/main.o
-	gcc lib_static/main.o -L./lib_static -lvector -o lib_static/main.out
+	mkdir -p ${LIB_STATIC}
+	${CC} -c vector/vector.c -o ${LIB_STATIC}/vector.out
+	ar crs ${LIB_STATIC}/libvector.a ${LIB_STATIC}/vector.out
+	${CC} -c vector_test.c -o ${LIB_STATIC}/main.o
+	${CC} ${LIB_STATIC}/main.o -L./${LIB_STATIC} -lvector -o ${LIB_STATIC}/main.out
 
 lib_shared:
-	mkdir -p lib_shared
-	gcc -c vector/vector.c -fPIC -o lib_shared/vector.o
-	gcc -shared lib_shared/vector.o -o lib_shared/libvector.so
+	mkdir -p ${LIB_SHARED}
+	${CC} -c vector/vector.c -fPIC -o ${LIB_SHARED}/vector.o
+	${CC} -shared ${LIB_SHARED}/vector.o -o ${LIB_SHARED}/libvector.so
 
-	gcc -c vector_test.c -o lib_shared/main.o
-	gcc lib_shared/main.o -L./lib_shared -lvector -o lib_shared/main.out
+	${CC} -c vector_test.c -o ${LIB_SHARED}/main.o
+	${CC} ${LIB_SHARED}/main.o -L./${LIB_SHARED} -lvector -o ${LIB_SHARED}/main.out
